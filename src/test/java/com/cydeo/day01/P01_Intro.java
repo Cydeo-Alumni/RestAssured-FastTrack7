@@ -1,4 +1,4 @@
-package com.cydeo;
+package com.cydeo.day01;
 
 import org.junit.jupiter.api.Test;
 
