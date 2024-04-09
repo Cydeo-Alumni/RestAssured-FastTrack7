@@ -2,7 +2,9 @@ package com.cydeo.day01;
 
 import com.cydeo.utility.FakeStoreTestBase;
 import org.junit.jupiter.api.Test;
-
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 public class P04_DeserializationPOJO extends FakeStoreTestBase {
 
     /**
@@ -30,6 +32,10 @@ public class P04_DeserializationPOJO extends FakeStoreTestBase {
 
     @Test
     public void task1() {
+
+
+
+
 
     }
 }
