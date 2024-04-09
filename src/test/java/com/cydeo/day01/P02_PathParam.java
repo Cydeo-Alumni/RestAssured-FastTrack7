@@ -50,6 +50,13 @@ public class P02_PathParam extends FakeStoreTestBase {
         Assertions.assertEquals("Clothes",response.path("category.name"));
 
 
+        // Verify category.imageurl link is working
+        String imgUrl = response.path("category.image");
+        System.out.println("imgUrl = " + imgUrl);
+
+        int statusCode = RestAssured.get(imgUrl).statusCode();
+        Assertions.assertEquals(200,statusCode);
+
     }
 
 
