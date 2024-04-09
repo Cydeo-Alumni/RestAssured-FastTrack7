@@ -5,9 +5,11 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class P02_PathParam extends FakeStoreTestBase {
@@ -80,7 +82,6 @@ public class P02_PathParam extends FakeStoreTestBase {
         //     *     - Content Type is application/json; charset=utf-8
         assertEquals("application/json; charset=utf-8",response.contentType());
 
-
         // CREATE A JSONPATH OBJECT
         JsonPath jp = response.jsonPath();
         //     *     - id is 13
@@ -95,5 +96,19 @@ public class P02_PathParam extends FakeStoreTestBase {
 
     }
 
+    @Test
+    public void hamCrest() {
 
+        given().accept(ContentType.JSON)
+                .pathParam("id", 13)
+                .when().get("/products/{id}").prettyPeek()
+                .then()
+                .statusCode(200)
+                .contentType("application/json; charset=utf-8")
+                .body("id", is(13))
+                .body("title",is("Classic Olive Chino Shorts"))
+                .body("category.name",is("Clothes"));
+
+
+    }
 }
