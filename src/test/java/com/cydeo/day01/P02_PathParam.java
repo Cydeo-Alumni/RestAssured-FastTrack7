@@ -64,7 +64,6 @@ public class P02_PathParam extends FakeStoreTestBase {
 
     }
 
-
     @Test
     public void jsonPath() {
 
@@ -111,4 +110,43 @@ public class P02_PathParam extends FakeStoreTestBase {
 
 
     }
+
+    @Test
+    public void allInOne() {
+
+       // getResponse(1,"categories");
+       // getResponse(1,"users");
+
+        Response response = getResponse(13, "products");
+
+        JsonPath jp = response.jsonPath();
+
+        //     * - id is 13
+        assertEquals(13,jp.getInt("id"));
+
+        //     *     - Name is "Classic Olive Chino Shorts"
+        assertEquals("Classic Olive Chino Shorts",jp.getString("title"));
+
+        //     *     - Category name is "Clothes"
+        assertEquals("Clothes",jp.getString("category.name"));
+    }
+
+
+
+    // users/{id}
+    // products/{id}
+    // categories/{id}
+    public static Response getResponse(int paramValue,String endpoint){
+
+        return  given().accept(ContentType.JSON)
+                .pathParam("id", paramValue)
+                .when().get("/" + endpoint + "/{id}").prettyPeek()
+                .then()
+                .statusCode(200)
+                .contentType("application/json; charset=utf-8")
+                .extract().response();
+
+
+    }
+
 }
