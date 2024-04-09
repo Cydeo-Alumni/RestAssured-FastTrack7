@@ -1,5 +1,6 @@
 package com.cydeo.day01;
 
+import com.cydeo.pojo.Category;
 import com.cydeo.pojo.Product;
 import com.cydeo.utility.FakeStoreTestBase;
 import io.restassured.http.ContentType;
@@ -64,12 +65,29 @@ public class P04_DeserializationPOJO extends FakeStoreTestBase {
         }
 
         System.out.println("====== GET SECOND PRODUCTS ======");
-        System.out.println("====== GET SECOND PRODUCTS PRICE ======");
-        System.out.println("====== GET SECOND PRODUCTS IMAGES ======");
-        System.out.println("====== GET SECOND PRODUCTS FIRST IMAGE ======");
-        System.out.println("====== GET SECOND PRODUCTS CATEGORY ======");
-        System.out.println("====== GET SECOND PRODUCTS CATEGORY NAME ======");
+        Product secondProduct = allProducts.get(1);
+        System.out.println("secondProduct = " + secondProduct);
 
+        System.out.println("====== GET SECOND PRODUCTS PRICE ======");
+        System.out.println("secondProduct.getPrice() = " + secondProduct.getPrice());
+
+        System.out.println("====== GET SECOND PRODUCTS IMAGES ======");
+        List<String> allImages = secondProduct.getAllImages();
+
+        // Verify all images links are working
+        for (String eachImage : allImages) {
+            assertEquals(200,get(eachImage).statusCode());
+        }
+
+        System.out.println("====== GET SECOND PRODUCTS FIRST IMAGE ======");
+        System.out.println("allImages.get(0) = " + allImages.get(0));
+
+        System.out.println("====== GET SECOND PRODUCTS CATEGORY ======");
+        Category secondProductCategory = secondProduct.getCategory();
+        System.out.println("secondProductCategory = " + secondProductCategory);
+
+        System.out.println("====== GET SECOND PRODUCTS CATEGORY NAME ======");
+        System.out.println("secondProductCategory.getName() = " + secondProductCategory.getName());
 
     }
 }
