@@ -5,12 +5,17 @@ import com.cydeo.utility.FakeStoreTestBase;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class P01_SerializationFlow extends FakeStoreTestBase {
 
 /*
@@ -25,6 +30,10 @@ public class P01_SerializationFlow extends FakeStoreTestBase {
     And id field should exist
  */
 
+    static int id;
+    static CategoryPOST category ;
+
+    @Order(1)
     @Test
     public void post() {
 
@@ -35,7 +44,7 @@ public class P01_SerializationFlow extends FakeStoreTestBase {
 
      */
 
-        CategoryPOST category=new CategoryPOST();
+        category=new CategoryPOST();
         category.setName("Nice Product");
         category.setImage("https://t4.ftcdn.net/jpg/00/81/38/59/360_F_81385977_wNaDMtgrIj5uU5QEQLcC9UNzkJc57xbu.jpg");
 
@@ -68,22 +77,22 @@ public class P01_SerializationFlow extends FakeStoreTestBase {
         assertEquals(category.getImage(),image);
 
         // ID
-        int id = jp.getInt("id");
+        id = jp.getInt("id");
         System.out.println("Category is generated with following id "+id);
 
 
     }
-
+    @Order(2)
     @Test
     public void getCategory() {
 
-        System.out.println("-- id is retrived from previous execution to make sure category is generated"+127);
+        System.out.println("-- id is retrived from previous execution to make sure category is generated"+id);
 
         given().accept(ContentType.JSON)
-                .pathParam("id",127).
+                .pathParam("id",id).
         when().get("/categories/{id}").
         then().statusCode(200)
-                .body("name",is("Nice Product"));
+                .body("name",is(category.getName()));
 
 
         System.out.println("-- GET /categories/{id} endpoint worked and name is verified");
@@ -91,13 +100,13 @@ public class P01_SerializationFlow extends FakeStoreTestBase {
 
     }
 
-
+    @Order(3)
     @Test
     public void delete() {
-        System.out.println("-- id is retrived from previous execution to delete this product"+180);
+        System.out.println("-- id is retrived from previous execution to delete this product"+id);
 
         Response response = given().accept(ContentType.JSON)
-                .pathParam("id", 209).
+                .pathParam("id", id).
                 when().delete("/categories/{id}")
                 .then()
                 .statusCode(200)
@@ -109,23 +118,23 @@ public class P01_SerializationFlow extends FakeStoreTestBase {
         assertEquals("true",responseTrue);
 
 
-        System.out.println("-- DELETE /categories/{id} endpoint worked with following id"+180);
+        System.out.println("-- DELETE /categories/{id} endpoint worked with following id"+id);
 
 
     }
-
+    @Order(4)
     @Test
     public void getCategory2() {
 
 
         given().accept(ContentType.JSON)
-                .pathParam("id",127).
+                .pathParam("id",id).
                 when().get("/categories/{id}").
                 then().statusCode(400)
                 .body("name",is("EntityNotFoundError"));
 
 
-        System.out.println("-- GET /categories/{id} endpoint worked and verified "+127+" is deleted");
+        System.out.println("-- GET /categories/{id} endpoint worked and verified "+id+" is deleted");
 
 
     }
