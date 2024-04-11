@@ -4,12 +4,9 @@ import com.cydeo.pojo.CategoryPOST;
 import com.cydeo.utility.FakeStoreTestBase;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
-import org.hamcrest.Matchers;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
@@ -73,6 +70,46 @@ public class P01_SerializationFlow extends FakeStoreTestBase {
         // ID
         int id = jp.getInt("id");
         System.out.println("Category is generated with following id "+id);
+
+
+    }
+
+    @Test
+    public void getCategory() {
+
+        System.out.println("-- id is retrived from previous execution to make sure category is generated"+127);
+
+        given().accept(ContentType.JSON)
+                .pathParam("id",127).
+        when().get("/categories/{id}").
+        then().statusCode(200)
+                .body("name",is("Nice Product"));
+
+
+        System.out.println("-- GET /categories/{id} endpoint worked and name is verified");
+
+
+    }
+
+
+    @Test
+    public void delete() {
+        System.out.println("-- id is retrived from previous execution to delete this product"+180);
+
+        Response response = given().accept(ContentType.JSON)
+                .pathParam("id", 209).
+                when().delete("/categories/{id}")
+                .then()
+                .statusCode(200)
+                .extract().response();
+
+
+        String responseTrue = response.asString();
+        System.out.println(responseTrue);
+        assertEquals("true",responseTrue);
+
+
+        System.out.println("-- DELETE /categories/{id} endpoint worked with following id"+180);
 
 
     }
