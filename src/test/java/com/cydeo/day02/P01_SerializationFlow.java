@@ -113,4 +113,20 @@ public class P01_SerializationFlow extends FakeStoreTestBase {
 
 
     }
+
+    @Test
+    public void getCategory2() {
+
+
+        given().accept(ContentType.JSON)
+                .pathParam("id",127).
+                when().get("/categories/{id}").
+                then().statusCode(400)
+                .body("name",is("EntityNotFoundError"));
+
+
+        System.out.println("-- GET /categories/{id} endpoint worked and verified "+127+" is deleted");
+
+
+    }
 }
