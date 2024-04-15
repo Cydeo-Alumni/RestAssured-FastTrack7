@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 
 public abstract class FakeStoreTestBase {
 
-    Logger log= LogManager.getLogger();
+   protected Logger log= LogManager.getLogger(this.getClass());
 
     @BeforeAll
     public static void init(){

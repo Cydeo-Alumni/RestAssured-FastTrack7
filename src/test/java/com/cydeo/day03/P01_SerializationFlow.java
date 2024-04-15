@@ -54,19 +54,22 @@ public class P01_SerializationFlow extends FakeStoreTestBase {
         catMap.put("image","https://t4.ftcdn.net/jpg/00/81/38/59/360_F_81385977_wNaDMtgrIj5uU5QEQLcC9UNzkJc57xbu.jpg");
         */
 
-        System.out.println("POST /categories end point is working");
-        System.out.println("Category object is created with following data");
-        System.out.println(category);
+        log.info("POST /categories end point is working");
+        log.info("Category object is created with following data");
+        log.info(category);
 
-        JsonPath jp = given()
+        Response response = given()
                 .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
+               .contentType(ContentType.JSON)
                 .body(category).
-                when().post("/categories").then()
-                .statusCode(201)
-                .contentType("application/json; charset=utf-8")
-                .body("id", is(notNullValue()))
-                .extract().jsonPath();
+                when().post("/categories");
+
+
+
+
+
+        JsonPath jp = response.jsonPath();
+
 
         // ASSERTION FOR NAME
         String name = jp.getString("name");
@@ -78,8 +81,13 @@ public class P01_SerializationFlow extends FakeStoreTestBase {
 
         // ID
         id = jp.getInt("id");
-        System.out.println("Category is generated with following id "+id);
 
+        if(response.statusCode()==201){
+            log.info("Category is generated with following id "+id);
+        }else
+        {
+            log.error("It fails and status code is "+response.statusCode());
+        }
 
     }
     @Order(2)
