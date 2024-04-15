@@ -94,7 +94,7 @@ public class P01_SerializationFlow extends FakeStoreTestBase {
     @Test
     public void getCategory() {
 
-        System.out.println("-- id is retrived from previous execution to make sure category is generated"+id);
+        log.info("-- id is retrived from previous execution to make sure category is generated"+id);
 
         given().accept(ContentType.JSON)
                 .pathParam("id",id).
@@ -103,7 +103,7 @@ public class P01_SerializationFlow extends FakeStoreTestBase {
                 .body("name",is(category.getName()));
 
 
-        System.out.println("-- GET /categories/{id} endpoint worked and name is verified");
+        log.info("-- GET /categories/{id} endpoint worked and name is verified");
 
 
     }
@@ -111,7 +111,7 @@ public class P01_SerializationFlow extends FakeStoreTestBase {
     @Order(3)
     @Test
     public void delete() {
-        System.out.println("-- id is retrived from previous execution to delete this product"+id);
+        log.info("-- id is retrived from previous execution to delete this product"+id);
 
         Response response = given().accept(ContentType.JSON)
                 .pathParam("id", id).
@@ -126,7 +126,7 @@ public class P01_SerializationFlow extends FakeStoreTestBase {
         assertEquals("true",responseTrue);
 
 
-        System.out.println("-- DELETE /categories/{id} endpoint worked with following id"+id);
+        log.info("-- DELETE /categories/{id} endpoint worked with following id"+id);
 
 
     }
@@ -142,7 +142,7 @@ public class P01_SerializationFlow extends FakeStoreTestBase {
                 .body("name",is("EntityNotFoundError"));
 
 
-        System.out.println("-- GET /categories/{id} endpoint worked and verified "+id+" is deleted");
+        log.info("-- GET /categories/{id} endpoint worked and verified "+id+" is deleted");
 
 
     }
