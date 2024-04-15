@@ -87,6 +87,13 @@ public class P02_XMLPractice {
             String nationality = xmlPath.getString("MRData.DriverTable.Driver["+i+"].Nationality");
             driver.setNationality(nationality);
 
+            /*
+
+            String dob = xmlPath.getString("MRData.DriverTable.Driver["+i+"].DateOfBirth");
+            driver.setDob(dob);
+
+             */
+
             allDrivers.add(driver);
 
         }
