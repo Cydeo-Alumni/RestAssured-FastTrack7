@@ -7,9 +7,8 @@ import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.*;
-import static org.junit.jupiter.api.Assertions.*;
 
-public class P03_Bookit {
+public class P03_BookitTest extends BookitTestBase {
 
           /*
             .get("/api/campuses")
@@ -32,9 +31,12 @@ public class P03_Bookit {
     public void task1() {
 
         // Get Token
-        String email=System.getenv("B_EMAIL");
+        String email=System.getenv("B_USERNAME");
+        System.out.println("email = " + email);
         String password=System.getenv("B_PASS");
+        System.out.println("password = " + password);
         String token = BookitUtil.getToken(email, password);
+
         System.out.println("token = " + token);
 
         // Get api/campuses
